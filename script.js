@@ -40,41 +40,52 @@ async function fetchChapters() {
     const container = document.getElementById('chapters-container');
     container.innerHTML = '<p style="color: var(--text-muted);">Đang tải dữ liệu cốt truyện...</p>';
 
+    // Lệnh in ra Console để kiểm tra xem link URL ghép vào đã chuẩn 100% chưa
+    console.log("🛠️ Bắt đầu gọi API tới link này:");
+    console.log("👉", API_URL);
+
     try {
         const response = await fetch(API_URL);
         
+        // In ra mã trạng thái (Ví dụ: 200 là OK, 404 là Không tìm thấy, 403 là Bị cấm)
+        console.log("📥 Mã trạng thái phản hồi từ Github:", response.status);
+
         if (!response.ok) {
-            throw new Error(`Lỗi kết nối: ${response.status}`);
+            // Nếu lỗi, cố gắng đọc xem Github nói gì rồi in ra đỏ chót trên Console
+            const errorText = await response.text();
+            console.error("❌ Lỗi chi tiết từ máy chủ Github:", errorText);
+            throw new Error(`Lỗi HTTP: ${response.status}`);
         }
         
         const issues = await response.json();
-        container.innerHTML = ''; // Xóa dòng chữ Đang tải...
+        
+        // Nếu thành công, in toàn bộ dữ liệu truyện ra Console để bạn xem cấu trúc
+        console.log("✅ Lấy dữ liệu thành công! Tổng số chương tìm thấy:", issues.length);
+        console.log("📦 Dữ liệu chi tiết:", issues);
+
+        container.innerHTML = ''; 
         
         if (issues.length === 0) {
             container.innerHTML = '<p style="color: var(--text-muted);">Tác phẩm này hiện chưa có chương nào được đăng tải.</p>';
             return;
         }
 
-        // Tạo thẻ hiển thị cho từng chương truyện lấy từ GitHub
         issues.forEach(issue => {
             const date = new Date(issue.created_at).toLocaleDateString('vi-VN');
-            
             const card = document.createElement('div');
             card.className = 'chapter-card';
             card.innerHTML = `
                 <h3>${issue.title}</h3>
                 <div class="chapter-meta">Cập nhật lúc: ${date}</div>
             `;
-            
-            // Gắn sự kiện click để mở đọc
             card.onclick = () => showReadingView(issue.title, date, issue.body);
-            
             container.appendChild(card);
         });
 
     } catch (error) {
-        console.error("Lỗi:", error);
-        container.innerHTML = '<p style="color: #ff6b6b;">Không thể kết nối đến máy chủ. Vui lòng kiểm tra lại cấu hình tên tài khoản hoặc kho lưu trữ.</p>';
+        // In ra dòng lỗi hệ thống (ví dụ: đứt mạng, sai cấu trúc)
+        console.error("🚨 Bắt được lỗi Exception:", error);
+        container.innerHTML = '<p style="color: #ff6b6b;">Không thể kết nối đến máy chủ. Vui lòng nhấn F12 để xem lỗi chi tiết.</p>';
     }
 }
 
