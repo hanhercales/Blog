@@ -1,0 +1,119 @@
+:root {
+    --bg-color: #121212;
+    --sidebar-bg: #1e1e1e;
+    --card-bg: #252526;
+    --text-main: #e0e0e0;
+    --text-muted: #888;
+    --accent: #4dabf7;
+    --border-color: #333;
+}
+
+body { 
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+    margin: 0; 
+    background-color: var(--bg-color); 
+    color: var(--text-main); 
+    display: flex; 
+    height: 100vh; 
+    overflow: hidden;
+}
+
+/* Thanh điều hướng bên trái (Sidebar) */
+.sidebar { 
+    width: 250px; 
+    background-color: var(--sidebar-bg); 
+    padding: 20px; 
+    border-right: 1px solid var(--border-color); 
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar h2 { 
+    font-size: 1.2rem; 
+    border-bottom: 1px solid var(--border-color); 
+    padding-bottom: 10px; 
+    margin-top: 0;
+}
+
+.story-list { 
+    list-style: none; 
+    padding: 0; 
+    margin: 0; 
+}
+
+.story-list li { 
+    padding: 12px 15px; 
+    cursor: pointer; 
+    border-radius: 6px; 
+    transition: background 0.2s; 
+    margin-bottom: 5px;
+}
+
+.story-list li:hover, .story-list li.active { 
+    background-color: var(--border-color); 
+    color: var(--accent);
+    font-weight: bold;
+}
+
+/* Khu vực nội dung chính */
+.main-content { 
+    flex: 1; 
+    padding: 40px; 
+    overflow-y: auto; 
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+/* Thẻ hiển thị từng chương */
+.chapter-card { 
+    background-color: var(--card-bg); 
+    padding: 20px 25px; 
+    margin-bottom: 20px; 
+    border-radius: 8px; 
+    border: 1px solid var(--border-color); 
+    cursor: pointer; 
+    transition: transform 0.2s, border-color 0.2s; 
+}
+
+.chapter-card:hover { 
+    transform: translateY(-3px); 
+    border-color: var(--accent); 
+}
+
+.chapter-card h3 { 
+    margin: 0 0 10px 0; 
+    color: var(--accent); 
+}
+
+.chapter-meta { 
+    font-size: 0.85rem; 
+    color: var(--text-muted); 
+}
+
+/* Giao diện khi ấn vào đọc 1 chương */
+#reading-view { 
+    display: none; 
+}
+
+.back-btn { 
+    background-color: transparent; 
+    color: var(--accent); 
+    border: 1px solid var(--accent); 
+    padding: 8px 16px; 
+    border-radius: 4px; 
+    cursor: pointer; 
+    margin-bottom: 30px;
+    font-weight: bold;
+}
+
+.back-btn:hover { 
+    background-color: var(--accent); 
+    color: var(--bg-color); 
+}
+
+.chapter-body { 
+    line-height: 1.8; 
+    font-size: 1.1rem; 
+    margin-top: 30px;
+    white-space: pre-line; /* Giữ nguyên các dấu xuống dòng từ Github Issue */
+}

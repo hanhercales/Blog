@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Cốt Truyện</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="sidebar">
+        <h2>Tác phẩm</h2>
+        <ul class="story-list" id="story-list">
+            <li class="active">Ocschosia X</li>
+            </ul>
+    </div>
+
+    <div class="main-content">
+        
+        <div id="list-view">
+            <h1 id="current-story-title">Ocschosia X</h1>
+            <p class="chapter-meta">Chọn một chương bên dưới để đọc</p>
+            <div id="chapters-container">
+                </div>
+        </div>
+
+        <div id="reading-view">
+            <button class="back-btn" onclick="showListView()">← Trở về danh sách</button>
+            <h1 id="reading-title"></h1>
+            <div class="chapter-meta" id="reading-meta"></div>
+            <div class="chapter-body" id="reading-body"></div>
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
