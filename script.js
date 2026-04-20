@@ -2,8 +2,8 @@
    CẤU HÌNH API 
    (Hãy thay đổi 2 dòng dưới đây thành thông tin thật của bạn)
 ========================================= */
-const GITHUB_USERNAME = 'TÊN_GITHUB_CỦA_BẠN'; 
-const REPO_NAME = 'TÊN_REPO_BLOG';            
+const GITHUB_USERNAME = 'hanhercales'; 
+const REPO_NAME = 'Blog';            
 
 // Đường dẫn API lấy bài viết do chính bạn tạo và đang ở trạng thái Open
 const API_URL = `https://api.github.com/repos/${GITHUB_USERNAME}/${REPO_NAME}/issues?creator=${GITHUB_USERNAME}&state=open`;
