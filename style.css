@@ -117,3 +117,93 @@ body {
     margin-top: 30px;
     white-space: pre-line; /* Giữ nguyên các dấu xuống dòng từ Github Issue */
 }
+
+.chapter-navigation {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 50px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color);
+}
+
+.chapter-navigation button {
+    background-color: var(--card-bg);
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.chapter-navigation button:disabled {
+    border-color: #555;
+    color: #555;
+    cursor: not-allowed;
+}
+
+.chapter-navigation button:not(:disabled):hover {
+    background-color: var(--accent);
+    color: var(--bg-color);
+}
+
+/* --- UI MỚI THÊM --- */
+
+/* Brand & Logo */
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+}
+.brand h2 {
+    margin: 0;
+    border: none; /* Bỏ viền cũ */
+    padding: 0;
+}
+.logo {
+    width: 35px;
+    height: 35px;
+    border-radius: 5px;
+}
+
+/* Ô tìm kiếm Sidebar */
+#search-story {
+    width: 100%;
+    padding: 10px;
+    background-color: var(--bg-color);
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+    border-radius: 5px;
+    margin-bottom: 15px;
+    box-sizing: border-box; /* Tránh bị tràn viền */
+}
+#search-story:focus {
+    outline: none;
+    border-color: var(--accent);
+}
+
+/* Layout phần header danh sách chương */
+.list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
+/* Ô chọn sắp xếp */
+#sort-select {
+    padding: 8px 12px;
+    background-color: var(--card-bg);
+    color: var(--text-main);
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: inherit;
+}
+#sort-select:focus {
+    outline: none;
+    border-color: var(--accent);
+}
