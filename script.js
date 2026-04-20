@@ -1,4 +1,17 @@
-// Hàm chuyển đổi sang chế độ đọc
+/* =========================================
+   CẤU HÌNH API 
+   (Hãy thay đổi 2 dòng dưới đây thành thông tin thật của bạn)
+========================================= */
+const GITHUB_USERNAME = 'TÊN_GITHUB_CỦA_BẠN'; 
+const REPO_NAME = 'TÊN_REPO_BLOG';            
+
+// Đường dẫn API lấy bài viết do chính bạn tạo và đang ở trạng thái Open
+const API_URL = `https://api.github.com/repos/${GITHUB_USERNAME}/${REPO_NAME}/issues?creator=${GITHUB_USERNAME}&state=open`;
+
+/* =========================================
+   GIAO DIỆN (VIEW CONTROL)
+========================================= */
+// Hiển thị nội dung đọc truyện
 function showReadingView(title, date, body) {
     document.getElementById('list-view').style.display = 'none';
     document.getElementById('reading-view').style.display = 'block';
@@ -6,60 +19,64 @@ function showReadingView(title, date, body) {
     document.getElementById('reading-title').innerText = title;
     document.getElementById('reading-meta').innerText = 'Đăng ngày: ' + date;
     
-    // Xử lý xuống dòng
-    document.getElementById('reading-body').innerHTML = body;
+    // Xử lý ngắt dòng để giữ đúng form kịch bản
+    const formattedBody = body ? body.replace(/\n/g, '<br>') : "Chương này chưa có nội dung.";
+    document.getElementById('reading-body').innerHTML = formattedBody;
     
-    // Cuộn lên đầu trang
+    // Tự động cuộn lên đầu trang
     document.querySelector('.main-content').scrollTop = 0;
 }
 
-// Hàm quay lại danh sách
+// Trở về màn hình danh sách chương
 function showListView() {
     document.getElementById('reading-view').style.display = 'none';
     document.getElementById('list-view').style.display = 'block';
 }
 
-/* Dữ liệu giả định (Mock Data) để kiểm tra giao diện */
-const mockIssues = [
-    {
-        title: "Chương 5: Bắt đầu viết kịch bản",
-        created_at: "2026-04-18T10:00:00Z",
-        body: "Khung cảnh trở nên im lặng. Eve nhìn chằm chằm vào khoảng không, cố gắng tiêu hóa những gì vừa xảy ra. Cô khẽ cắn môi, định nói một điều gì đó nghe thật an ủi.\n\nNhưng Han đã gạt đi trước khi cô kịp mở lời. Cậu cất giọng đều đều, không một chút sến súa:\n\n'Xin lỗi nhé. Nhưng gã đó chưa từng nói chuyện sến súa như này đâu.'",
-        labels: [{name: "Ocschosia X"}]
-    },
-    {
-        title: "Chương 4: Ráp nối cấu trúc",
-        created_at: "2026-04-10T10:00:00Z",
-        body: "Nội dung chương 4 sẽ được load vào đây...",
-        labels: [{name: "Ocschosia X"}]
-    },
-    {
-        title: "Chương 1, 2, 3: Phác thảo ý tưởng",
-        created_at: "2026-04-01T10:00:00Z",
-        body: "Hệ thống logic đã được đóng khung. Đang tiến hành xử lý các nhánh rẽ...",
-        labels: [{name: "Ocschosia X"}]
-    }
-];
-
-// Hàm render dữ liệu ra màn hình
-function renderChapters(issues) {
+/* =========================================
+   DỮ LIỆU (DATA FETCHING)
+========================================= */
+async function fetchChapters() {
     const container = document.getElementById('chapters-container');
-    container.innerHTML = ''; 
+    container.innerHTML = '<p style="color: var(--text-muted);">Đang tải dữ liệu cốt truyện...</p>';
 
-    issues.forEach(issue => {
-        const date = new Date(issue.created_at).toLocaleDateString('vi-VN');
+    try {
+        const response = await fetch(API_URL);
         
-        const card = document.createElement('div');
-        card.className = 'chapter-card';
-        card.innerHTML = `
-            <h3>${issue.title}</h3>
-            <div class="chapter-meta">Cập nhật lúc: ${date}</div>
-        `;
+        if (!response.ok) {
+            throw new Error(`Lỗi kết nối: ${response.status}`);
+        }
         
-        card.onclick = () => showReadingView(issue.title, date, issue.body);
-        container.appendChild(card);
-    });
+        const issues = await response.json();
+        container.innerHTML = ''; // Xóa dòng chữ Đang tải...
+        
+        if (issues.length === 0) {
+            container.innerHTML = '<p style="color: var(--text-muted);">Tác phẩm này hiện chưa có chương nào được đăng tải.</p>';
+            return;
+        }
+
+        // Tạo thẻ hiển thị cho từng chương truyện lấy từ GitHub
+        issues.forEach(issue => {
+            const date = new Date(issue.created_at).toLocaleDateString('vi-VN');
+            
+            const card = document.createElement('div');
+            card.className = 'chapter-card';
+            card.innerHTML = `
+                <h3>${issue.title}</h3>
+                <div class="chapter-meta">Cập nhật lúc: ${date}</div>
+            `;
+            
+            // Gắn sự kiện click để mở đọc
+            card.onclick = () => showReadingView(issue.title, date, issue.body);
+            
+            container.appendChild(card);
+        });
+
+    } catch (error) {
+        console.error("Lỗi:", error);
+        container.innerHTML = '<p style="color: #ff6b6b;">Không thể kết nối đến máy chủ. Vui lòng kiểm tra lại cấu hình tên tài khoản hoặc kho lưu trữ.</p>';
+    }
 }
 
-// Khởi chạy giao diện với dữ liệu giả
-renderChapters(mockIssues);
+// Kích hoạt việc lấy dữ liệu ngay khi tải xong trang web
+fetchChapters();
