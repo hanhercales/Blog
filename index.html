@@ -13,18 +13,29 @@
 
     <div class="sidebar" id="sidebar">
         <div class="brand">
-            <button class="close-menu-btn" onclick="toggleSidebar()">✕</button>
-            <img src="teriri.jpg" alt="Logo" class="logo">
-            <h2>Thư Viện</h2>
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <img src="teriri.jpg" alt="Logo" class="logo">
+                <h2>Thư Viện</h2>
+            </div>
+            
+            <button id="theme-toggle" class="theme-btn" onclick="toggleTheme()" title="Đổi giao diện">
+                <img id="theme-icon" class="theme-icon" src="" alt="Theme">
+            </button>
         </div>
-        <ul class="story-list" id="sidebar-story-list">
-            </ul>
+        <ul class="story-list" id="sidebar-story-list"></ul>
     </div>
 
     <div class="main-content">
+        
         <div class="mobile-nav">
-            <button class="menu-btn" onclick="toggleSidebar()">☰</button>
-            <span class="mobile-nav-title">Menu</span>
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+                <span class="mobile-nav-title">Menu</span>
+            </div>
+            
+            <button id="mobile-theme-toggle" class="theme-btn" onclick="toggleTheme()">
+                <img id="mobile-theme-icon" class="theme-icon" src="" alt="Theme">
+            </button>
         </div>
 
         <div id="home-view">
@@ -33,7 +44,6 @@
                     <h1>Tác phẩm của tôi</h1>
                     <p class="chapter-meta">Chọn một bộ truyện để bắt đầu đọc</p>
                 </div>
-                
                 <div class="home-filters">
                     <input type="text" id="search-story" placeholder="🔍 Tìm tên truyện..." onkeyup="filterHomeStories()">
                     <select id="sort-home-select" onchange="sortHomeStories()">
@@ -44,7 +54,6 @@
                     </select>
                 </div>
             </div>
-            
             <div id="stories-grid" class="story-grid"></div>
         </div>
 
@@ -73,8 +82,8 @@
             <div class="chapter-meta" id="reading-meta"></div>
             <div class="chapter-body" id="reading-body"></div>
             <div class="chapter-navigation">
-                <button id="prev-btn" onclick="navChapter(-1)">← Chương trước</button>
-                <button id="next-btn" onclick="navChapter(1)">Chương sau →</button>
+                <button id="prev-btn" onclick="navChapter(-1, this)">← Trước</button>
+                <button id="next-btn" onclick="navChapter(1, this)">Sau →</button>
             </div>
         </div>
 

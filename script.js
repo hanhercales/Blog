@@ -184,6 +184,11 @@ function openChapter(index) {
     // Cuộn lên top & Cập nhật nút điều hướng
     document.querySelector('.main-content').scrollTop = 0;
     updateNavButtons();
+
+    const sidebar = document.getElementById('sidebar');
+    if (window.innerWidth <= 768 && sidebar.classList.contains('active')) {
+        toggleSidebar(); // Gọi hàm này thay vì tự remove class
+    }
 }
 
 function updateNavButtons() {
@@ -191,11 +196,67 @@ function updateNavButtons() {
     document.getElementById('next-btn').disabled = (currentIndex >= currentChapters.length - 1); 
 }
 
-function navChapter(step) {
+/* Tìm hàm navChapter hiện tại của bạn và SỬA LẠI THÀNH NHƯ SAU: */
+// Nhận thêm tham số 'btn' để biết nút nào vừa bị bấm
+function navChapter(step, btn) {
+    // XÓA FOCUS HOLDER: Ép nút vừa bấm phải mất trạng thái focus (bỏ viền viền màu xanh)
+    if (btn) btn.blur(); 
+    
     const newIndex = currentIndex + step;
     if (newIndex >= 0 && newIndex < currentChapters.length) {
         openChapter(newIndex);
     }
+}
+
+
+/* =====================================
+   XỬ LÝ ĐỔI GIAO DIỆN (DARK / LIGHT VỚI ẢNH)
+===================================== */
+const SUN_IMG = 'HuTaoSleep.png';   
+const MOON_IMG = 'HuTaoWake.jpg';  
+
+// Lấy theme đã lưu hoặc mặc định là dark
+let currentTheme = localStorage.getItem('theme') || 'dark';
+
+// Hàm cập nhật cả 2 ảnh trên giao diện cùng lúc
+function updateThemeImages(themeMode) {
+    const iconSrc = themeMode === 'light' ? MOON_IMG : SUN_IMG;
+    const pcIcon = document.getElementById('theme-icon');
+    const mobileIcon = document.getElementById('mobile-theme-icon');
+    
+    // Check xem có nút đó trên màn hình không rồi mới đổi ảnh để chống lỗi
+    if (pcIcon) pcIcon.src = iconSrc;
+    if (mobileIcon) mobileIcon.src = iconSrc;
+}
+
+// Chạy 1 lần khi load trang để hiển thị đúng giao diện cũ
+if (currentTheme === 'light') {
+    document.body.setAttribute('data-theme', 'light');
+}
+updateThemeImages(currentTheme);
+
+// Hàm được gọi khi bấm nút
+function toggleTheme() {
+    // Ép nhả chuột (blur) cho các nút để không bị lưu viền focus
+    const btnPC = document.getElementById('theme-toggle');
+    const btnMobile = document.getElementById('mobile-theme-toggle');
+    if (btnPC) btnPC.blur();
+    if (btnMobile) btnMobile.blur();
+
+    const isLightMode = document.body.getAttribute('data-theme') === 'light';
+    
+    if (isLightMode) {
+        // Đang Light -> Chuyển về Dark
+        document.body.removeAttribute('data-theme');
+        currentTheme = 'dark';
+    } else {
+        // Đang Dark -> Chuyển lên Light
+        document.body.setAttribute('data-theme', 'light');
+        currentTheme = 'light';
+    }
+    
+    localStorage.setItem('theme', currentTheme);
+    updateThemeImages(currentTheme);
 }
 
 /* =========================================
