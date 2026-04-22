@@ -3,48 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog Cốt Truyện</title>
-    
+    <title>Han's Blog</title>
     <link rel="icon" href="teriri.jpg" type="image/png">
-    
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <div class="sidebar">
+    <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
+
+    <div class="sidebar" id="sidebar">
         <div class="brand">
+            <button class="close-menu-btn" onclick="toggleSidebar()">✕</button>
             <img src="teriri.jpg" alt="Logo" class="logo">
             <h2>Thư Viện</h2>
         </div>
-
-        <input type="text" id="search-story" placeholder="🔍 Tìm tác phẩm..." onkeyup="filterStories()">
-
-        <ul class="story-list" id="story-list">
-            <li class="active">Ocschosia X</li>
-            <li>Một tác phẩm khác</li> </ul>
+        <ul class="story-list" id="sidebar-story-list">
+            </ul>
     </div>
 
     <div class="main-content">
-        
-        <div id="list-view">
+        <div class="mobile-nav">
+            <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+            <span class="mobile-nav-title">Menu</span>
+        </div>
+
+        <div id="home-view">
             <div class="list-header">
                 <div>
-                    <h1 id="current-story-title">Ocschosia X</h1>
-                    <p class="chapter-meta">Chọn một chương bên dưới để đọc</p>
+                    <h1>Tác phẩm của tôi</h1>
+                    <p class="chapter-meta">Chọn một bộ truyện để bắt đầu đọc</p>
                 </div>
                 
+                <div class="home-filters">
+                    <input type="text" id="search-story" placeholder="🔍 Tìm tên truyện..." onkeyup="filterHomeStories()">
+                    <select id="sort-home-select" onchange="sortHomeStories()">
+                        <option value="az">Tên: A ➔ Z</option>
+                        <option value="za">Tên: Z ➔ A</option>
+                        <option value="most">Chương: Nhiều nhất</option>
+                        <option value="least">Chương: Ít nhất</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div id="stories-grid" class="story-grid"></div>
+        </div>
+
+        <div id="list-view" style="display: none;">
+            <div class="nav-controls-top">
+                <button class="back-btn" onclick="showHomeView()">← Trở về Trang chủ</button>
+            </div>
+            <div class="list-header">
+                <div>
+                    <h1 id="current-story-title">Tên Truyện</h1>
+                    <p class="chapter-meta" id="chapter-count-meta">Đang tải...</p>
+                </div>
                 <select id="sort-select" onchange="sortChapters()">
                     <option value="asc">Sắp xếp: Cũ nhất ➔ Mới nhất</option>
                     <option value="desc">Sắp xếp: Mới nhất ➔ Cũ nhất</option>
                 </select>
             </div>
-
             <div id="chapters-container"></div>
         </div>
 
-        <div id="reading-view">
+        <div id="reading-view" style="display: none;">
             <div class="nav-controls-top">
-                <button class="back-btn" onclick="showListView()">← Trở về danh sách</button>
+                <button class="back-btn" onclick="showListView()">← Trở về Mục lục</button>
             </div>
             <h1 id="reading-title"></h1>
             <div class="chapter-meta" id="reading-meta"></div>
